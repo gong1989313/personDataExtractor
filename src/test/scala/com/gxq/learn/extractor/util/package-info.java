@@ -5,4 +5,4 @@
  * @author Administrator
  *
  */
-package com.gxq.learn.extractor;
+package com.gxq.learn.extractor.util;
