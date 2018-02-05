@@ -7,10 +7,13 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 
 import com.gxq.learn.extractor.enums.StatusTypeEnum;
+import com.gxq.learn.extractor.service.DBPersistenceService;
 import com.gxq.learn.extractor.util.DBUtil;
 import com.gxq.learn.extractor.util.ParseUtil;
 
 public class CsvParser implements Serializable {
+	
+	DBPersistenceService dbService = new DBPersistenceService();
 
 	private static final long serialVersionUID = 1L;
 	
@@ -103,7 +106,8 @@ public class CsvParser implements Serializable {
 						prest = jdbcDao.getBatchPS(conn, prest, sql);
 						jdbcDao.updateData(conn, prest, index, batchNum, sql, parms);*/
 						//System.out.println("******************** >>>>"+parms.length);
-						DBUtil.show(index, parms);
+						DBUtil.show(index, null);
+						dbService.persistence(parms);
 						temp.delete(0, temp.length());
 						count = 0;
 						status = StatusTypeEnum.NewFieldStart;
