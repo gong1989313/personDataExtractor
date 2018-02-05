@@ -1,5 +1,6 @@
 package com.gxq.learn.extractor.dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ import com.gxq.learn.extractor.pojo.Person;
 
 public class DBPersistenceDao {
 	
-	private final String insertSql = "insert into users(name, \r\n" + 
+	private final String insertSql = "insert into person(name, \r\n" + 
 			"cardno, \r\n" + 
 			"descriot, \r\n" + 
 			"ctftp, \r\n" + 
@@ -50,14 +51,15 @@ public class DBPersistenceDao {
 			"caddress, \r\n" + 
 			"czip, \r\n" + 
 			"family, \r\n" + 
-			"version) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			"version, id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	public void batchInsert(List<Person> personList) throws SQLException {
-		Object[][] params = new Object[personList.size()][];
+	public /*synchronized */void batchInsert(List<Person> personList) {
+		Object[][] params = new Object[personList.size()][33];
 		QueryRunner qr = new QueryRunner();
 		int size = personList.size();
 		for(int i=0; i<size; i++) {
 			Person p = personList.get(i);
+			//System.out.println(p);
 			params[i][0] = p.getName();
 			params[i][1] = p.getCardno();
 			params[i][2] = p.getDescriot();
@@ -90,8 +92,18 @@ public class DBPersistenceDao {
 			params[i][29] = p.getCzip();
 			params[i][30] = p.getFamily();
 			params[i][31] = p.getVersion();
+			params[i][32] = p.getId();
 		}
-		qr.batch(JdbcUtil.getConnection(), insertSql, params);
+		Connection conn = null;
+		try {
+			conn = JdbcUtil.getConnection();
+			qr.batch(conn, insertSql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			//System.out.println("test ..."+conn);
+			JdbcUtil.close();
+		}
 	}
 
 	/**

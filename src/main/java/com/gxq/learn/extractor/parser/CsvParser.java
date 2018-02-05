@@ -106,6 +106,7 @@ public class CsvParser implements Serializable {
 						prest = jdbcDao.getBatchPS(conn, prest, sql);
 						jdbcDao.updateData(conn, prest, index, batchNum, sql, parms);*/
 						//System.out.println("******************** >>>>"+parms.length);
+						//
 						DBUtil.show(index, null);
 						dbService.persistence(parms);
 						temp.delete(0, temp.length());

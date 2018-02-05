@@ -6,30 +6,26 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.gxq.learn.extractor.constant.ParserConstant;
 import com.gxq.learn.extractor.dao.DBPersistenceDao;
 import com.gxq.learn.extractor.pojo.Person;
 
 public class DBPersistenceService {
 	private DBPersistenceDao dao = new DBPersistenceDao();
-	List<Person> personList = new ArrayList<Person>();
+	List<Person> personList = new ArrayList<Person>(ParserConstant.batchNum);
 	
 	public void persistence(String[] parms) {
 		if(parms == null) {
 			return;
 		}
-		if(personList.size() < 100) {
+		if(personList.size() < ParserConstant.batchNum) {
 			Person p = packageObject(parms);
 			if(p != null) {
 				personList.add(p);
 			}
 		}else {
-			try {
-				dao.batchInsert(personList);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}finally {
-				personList.clear();
-			}
+			dao.batchInsert(personList);
+			personList.clear();
 		}
 	}
 	
@@ -67,6 +63,7 @@ public class DBPersistenceService {
 		p.setCzip(parms[29]);
 		p.setFamily(parms[30]);
 		p.setVersion(parms[31]);
+		p.setId(parms[32]);
 		if(!StringUtils.equalsIgnoreCase(p.getAddress(), "Address")) {
 			return p;
 		}

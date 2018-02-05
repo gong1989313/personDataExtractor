@@ -4,12 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JdbcUtil {
-	// 创建当前线程的局部变量
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
-
 	/**
 	 * 获取Connection
-	 * 
 	 * @return
 	 * @throws SQLException
 	 */
@@ -18,7 +15,8 @@ public class JdbcUtil {
 		Connection conn = threadLocal.get();
 		if (conn == null) {
 			// 第一次的时候，还没绑定，需要创建
-			conn = DBCPUtil.getConnection();
+			threadLocal.set(DBCPUtil.getConnection());
+			conn = threadLocal.get();
 		}
 		return conn;
 	}
@@ -54,7 +52,6 @@ public class JdbcUtil {
 				conn.rollback();
 			}
 		} catch (Exception e) {
-
 			throw new RuntimeException();
 		}
 	}
@@ -65,19 +62,16 @@ public class JdbcUtil {
 	public static void commit() {
 		try {
 			Connection conn = getConnection();
-
 			if (conn != null) {
 				// 提交事务
 				conn.commit();
 			}
 		} catch (Exception e) {
-
 			throw new RuntimeException();
 		}
 	}
 
 	public static void close() {
-
 		try {
 			Connection conn = getConnection();
 			if (conn != null) {
