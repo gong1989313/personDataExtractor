@@ -13,10 +13,8 @@ import com.gxq.learn.extractor.util.ParseUtil;
 
 public class CsvParser implements Serializable {
 	
-	DBPersistenceService dbService = new DBPersistenceService();
-
+	private final DBPersistenceService dbService = new DBPersistenceService();
 	private static final long serialVersionUID = 1L;
-	
 	private BufferedReader br = null;
 
 	public void parseCSVFile(int fieldNum, String path) {
@@ -28,7 +26,7 @@ public class CsvParser implements Serializable {
 		StringBuilder quotesFieldBak = new StringBuilder();
 		StatusTypeEnum status = StatusTypeEnum.NewFieldStart;
 		int ch = 0, pos = -1;
-		boolean endFlag = false, quotesText = false, isQutesFlag = false;
+		boolean quotesText = false, isQutesFlag = false;
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
 			while ((ch = br.read()) != -1) {
@@ -129,10 +127,8 @@ public class CsvParser implements Serializable {
 					quotesFieldBak.append((char) ch);
 				}
 			}
-			endFlag = true;
-			/*conn = jdbcDao.getBatchProcessConn(conn);
-			prest = jdbcDao.getBatchPS(conn, prest, sql);
-			jdbcDao.endUpdateData(conn, prest, endFlag);*/
+			DBUtil.show(index, null);
+			dbService.persistence(parms);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
