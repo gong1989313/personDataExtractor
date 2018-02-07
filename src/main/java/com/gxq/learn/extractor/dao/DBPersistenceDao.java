@@ -59,7 +59,6 @@ public class DBPersistenceDao {
 		int size = personList.size();
 		for(int i=0; i<size; i++) {
 			Person p = personList.get(i);
-			//System.out.println(p);
 			params[i][0] = p.getName();
 			params[i][1] = p.getCardno();
 			params[i][2] = p.getDescriot();
@@ -98,10 +97,10 @@ public class DBPersistenceDao {
 		try {
 			conn = JdbcUtil.getConnection();
 			qr.batch(conn, insertSql, params);
+			System.out.println("Thread "+Thread.currentThread().getName()+" insert "+params.length+" successful.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			//System.out.println("test ..."+conn);
 			JdbcUtil.close();
 		}
 	}
