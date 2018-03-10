@@ -4,7 +4,6 @@ import java.io.File;
 
 import com.gxq.learn.extractor.constant.ParserConstant;
 import com.gxq.learn.extractor.parser.CsvParser;
-import com.gxq.learn.extractor.util.ThreadPoolUtil;
 
 public class ExtractProcessor {
 	
