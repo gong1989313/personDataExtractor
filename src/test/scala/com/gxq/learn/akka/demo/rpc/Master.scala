@@ -58,8 +58,8 @@ class Master(val host: String, val port: Int) extends Actor {
 object Master {
   def main(args: Array[String]) {
 
-    val host = args(0)
-    val port = args(1).toInt
+    val host = "127.0.0.1"//args(0)
+    val port = 8080//args(1).toInt
     // 准备配置
     val configStr =
       s"""
