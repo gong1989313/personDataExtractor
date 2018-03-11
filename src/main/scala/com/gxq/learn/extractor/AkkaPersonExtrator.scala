@@ -1,4 +1,4 @@
-/*package com.gxq.learn.extractor
+package com.gxq.learn.extractor
 
 import akka.pattern.ask
 import scala.concurrent.duration._
@@ -9,6 +9,7 @@ import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.actorRef2Scala
 import com.gxq.learn.extractor.actor.MasterActor
+import com.gxq.learn.extractor.message.Result
 
 object AkkaPersonExtrator extends App {
   implicit val timeout = Timeout(5 seconds)
@@ -28,6 +29,5 @@ object AkkaPersonExtrator extends App {
   val result = Await.result(future, timeout.duration).asInstanceOf[Map[String, Int]]
   result.map(m => println(m._1, m._2))
  
- 
-  system.shutdown()
-}*/
+  system.terminate()
+}
